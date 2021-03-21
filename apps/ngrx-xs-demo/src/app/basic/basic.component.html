@@ -1,0 +1,25 @@
+<div class="p-grid">
+  <div class="p-col-3 p-d-flex p-justify-center">
+    <p-button type="button"
+              styleClass="p-button-icon-only p-button-text p-button-rounded"
+              pTooltip="Decrease counter"
+              icon="pi pi-minus"
+              (onClick)="onDecreaseCounter()">
+    </p-button>
+  </div>
+
+  <div class="p-col-6 p-d-flex p-justify-center">
+    <p-inputNumber [ngModel]="counter$ | async"
+                   (ngModelChange)="onSetCounter($event)">
+    </p-inputNumber>
+  </div>
+
+  <div class="p-col-3 p-d-flex p-justify-center">
+    <p-button type="button"
+              styleClass="p-button-icon-only p-button-text p-button-rounded"
+              pTooltip="Increase counter"
+              icon="pi pi-plus"
+              (onClick)="onIncreaseCounter()">
+    </p-button>
+  </div>
+</div>
