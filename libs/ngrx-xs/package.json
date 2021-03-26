@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "A inheritance and less boilerplate approach to NGRX.",
   "author": "Leon Marzahn",
+  "license": "MIT",
+  "homepage": "https://github.com/leon-marzahn/marzahn-dev/tree/master/libs/ngrx-xs#readme",
   "repository": {
     "type": "git",
     "url": "https://github.com/leon-marzahn/marzahn-dev.git"
@@ -10,7 +12,6 @@
   "bugs": {
     "url": "https://github.com/leon-marzahn/marzahn-dev/issues"
   },
-  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^11.2.6",
     "@angular/core": "^11.2.6",

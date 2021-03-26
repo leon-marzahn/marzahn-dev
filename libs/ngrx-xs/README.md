@@ -1,4 +1,5 @@
 # NGRX-XS
+![npm bundle size](https://img.shields.io/bundlephobia/min/@marzahn-dev/ngrx-xs?style=for-the-badge)
 
 A inheritance and less boilerplate approach to NGRX.
 
