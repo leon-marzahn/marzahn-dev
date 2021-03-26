@@ -1,3 +1,5 @@
 # MarzahnDev
+A collection of libraries made by me.
 
-[ngrx-xs](libs/ngrx-xs)
+## Angular libraries
+- [ngrx-xs](libs/ngrx-xs) (NGRX)
