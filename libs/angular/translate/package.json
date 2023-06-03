@@ -1,6 +1,6 @@
 {
   "name": "@marzahn-dev/ngx-translate",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "https://github.com/leon-marzahn/marzahn-dev",
   "peerDependencies": {
     "@angular/common": "^16.0.0",
