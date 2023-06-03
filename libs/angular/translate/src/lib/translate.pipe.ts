@@ -1,5 +1,5 @@
 import { inject, Pipe, PipeTransform, signal } from '@angular/core';
-import { NgxTranslateService } from '@marzahn-dev/ngx-translate';
+import { NgxTranslateService } from './translate.service';
 
 @Pipe({
   name: 'ngxTranslate',
