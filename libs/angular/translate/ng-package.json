@@ -5,6 +5,7 @@
     "entryFile": "src/index.ts"
   },
   "allowedNonPeerDependencies": [
-    "lodash-es"
+    "lodash-es",
+    "js-yaml"
   ]
 }

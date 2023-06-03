@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "tslib": "^2.3.0",
-    "lodash-es": "^4.17.21"
+    "lodash-es": "^4.17.21",
+    "js-yaml": "^4.1.0"
   },
   "sideEffects": false
 }
