@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: yarn --frozen-lockfile
+        run: yarn
       - name: Test
         run: yarn affected:test
       - name: Lint
