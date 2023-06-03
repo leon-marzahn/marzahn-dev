@@ -10,10 +10,10 @@ on:
 jobs:
   default:
     runs-on: ubuntu-latest
-    container:
-      image: node:18-alpine
     steps:
       - uses: actions/checkout@v2
+      - uses: nrwl/nx-set-shas@v3
+
       - name: Install dependencies
         run: yarn
       - name: Test
