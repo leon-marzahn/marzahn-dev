@@ -1,1 +1,2 @@
 test: App hallo
+pipe: App pipe hallo

@@ -81,6 +81,7 @@ If the commit reverts a previous commit, it should begin with `revert:`, followe
 
 Must be one of the following:
 
+- **chore**: Chores like tagging releases
 - **ci**: Changes to our CI configuration files and scripts or build systems (example scopes: github, npm, yarn)
 - **docs**: Documentation only changes
 - **feat**: A new feature

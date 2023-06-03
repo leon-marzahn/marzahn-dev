@@ -1,17 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxTranslateHttpYamlLoader, provideNgxTranslateHttpYamlLoader } from '@marzahn-dev/ngx-translate/loaders/http-yaml';
 import { HttpClientModule } from '@angular/common/http';
-import { NgxTranslateService, provideNgxTranslate } from '@marzahn-dev/ngx-translate';
+import { NgxTranslatePipe, NgxTranslateService, provideNgxTranslate } from '@marzahn-dev/ngx-translate';
 import { TestComponent } from './test.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'marzahn-dev-root',
-  template: '<marzahn-dev-test/>',
+  template: `
+    App: {{ 'pipe' | ngxTranslate }}
+
+    <marzahn-dev-test/>
+  `,
   standalone: true,
   imports: [
     CommonModule,
     HttpClientModule,
+
+    NgxTranslatePipe,
+
     TestComponent
   ],
   providers: [

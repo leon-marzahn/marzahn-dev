@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, isSignal, Signal, signal } from '@angular/core';
 import { NgxTranslateLoader } from './translate.loader';
 import {
   NGX_TRANSLATE_DEFAULT_LANGUAGE,
@@ -108,7 +108,11 @@ export class NgxTranslateService {
    *
    * @param key The key to use for translation.
    */
-  public computed(key: string | string[]): Signal<string | object | undefined> {
+  public computed(key: string | string[] | undefined | Signal<string | string[] | undefined>): Signal<string | object | undefined> {
+    if (isSignal(key)) {
+      return computed(() => this.getTranslation(this.store.translationsByCurrentLanguage(), key()));
+    }
+
     return computed(() => this.getTranslation(this.store.translationsByCurrentLanguage(), key));
   }
 
@@ -161,7 +165,8 @@ export class NgxTranslateService {
    * @param translations The translations object.
    * @param key The key to use for translation.
    */
-  public getTranslation(translations: Record<string, string | object>, key: string | string[]): string | object | undefined {
+  public getTranslation(translations: Record<string, string | object>, key: string | string[] | undefined): string | object | undefined {
+    if (!key) return undefined;
     const atPath = at<string | object | undefined>(translations, key);
     if (!atPath.length) return undefined;
     return atPath[0] ?? undefined;
