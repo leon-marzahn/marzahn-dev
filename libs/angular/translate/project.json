@@ -1,0 +1,50 @@
+{
+  "name": "angular-translate",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/angular/translate/src",
+  "prefix": "ngx-translate",
+  "tags": ["angular"],
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/angular/translate/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/angular/translate/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/angular/translate/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/angular/translate/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/angular/translate/**/*.ts",
+          "libs/angular/translate/**/*.html"
+        ]
+      }
+    }
+  }
+}
