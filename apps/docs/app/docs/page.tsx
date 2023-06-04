@@ -1,7 +1,5 @@
 export default function Page() {
   return (
-    <div>
-      Homer
-    </div>
+    <div>DOCS</div>
   );
 }
