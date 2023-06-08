@@ -1,13 +1,9 @@
 import Markdoc from '@markdoc/markdoc';
-import { generateMarkdownMetadata, getMarkdownContent, markdoc } from '../../../util';
+import { generateMarkdownMetadata, getMarkdownContent, getMarkdownPaths, markdoc } from '../../util';
 import React from 'react';
-import fg from 'fast-glob';
 
 export function generateStaticParams(): { slug: string[] }[] {
-  const docPaths = fg.sync([
-    '**/*.md',
-    '!index.md'
-  ], { cwd: markdoc.path });
+  const docPaths = getMarkdownPaths();
   const segments: { slug: string[] }[] = [];
 
   for (let docPath of docPaths) {
