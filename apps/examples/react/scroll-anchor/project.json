@@ -1,0 +1,80 @@
+{
+  "name": "examples-react-scroll-anchor",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/examples/react/scroll-anchor/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/examples/react/scroll-anchor"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "examples-react-scroll-anchor:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "examples-react-scroll-anchor:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "examples-react-scroll-anchor:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "examples-react-scroll-anchor:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "examples-react-scroll-anchor:build:development"
+        },
+        "production": {
+          "buildTarget": "examples-react-scroll-anchor:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/apps/examples/react/scroll-anchor"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../../../coverage/apps/examples/react/scroll-anchor"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/examples/react/scroll-anchor/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "examples-react-scroll-anchor:build"
+      }
+    }
+  },
+  "tags": ["react", "example"]
+}

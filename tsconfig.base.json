@@ -19,6 +19,9 @@
       "@marzahn-dev/ngx-translate": ["libs/angular/translate/src/index.ts"],
       "@marzahn-dev/ngx-translate/loaders/*": [
         "libs/angular/translate/loaders/*"
+      ],
+      "@marzahn-dev/react-scroll-anchor": [
+        "libs/react/scroll-anchor/src/index.ts"
       ]
     }
   },
