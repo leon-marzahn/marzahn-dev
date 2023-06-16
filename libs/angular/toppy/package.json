@@ -1,0 +1,14 @@
+{
+  "name": "@marzahn-dev/ngx-toppy",
+  "version": "0.0.1",
+  "repository": "https://github.com/leon-marzahn/marzahn-dev",
+  "peerDependencies": {
+    "@angular/common": "^16.0.0",
+    "@angular/core": "^16.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "lodash-es": "^4.17.21"
+  },
+  "sideEffects": false
+}

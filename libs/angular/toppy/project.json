@@ -1,0 +1,50 @@
+{
+  "name": "angular-toppy",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/angular/toppy/src",
+  "prefix": "marzahn-dev",
+  "tags": ["angular"],
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:package",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/angular/toppy/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/angular/toppy/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/angular/toppy/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/angular/toppy/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/angular/toppy/**/*.ts",
+          "libs/angular/toppy/**/*.html"
+        ]
+      }
+    }
+  }
+}
