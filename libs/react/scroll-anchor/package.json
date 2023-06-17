@@ -1,7 +1,23 @@
 {
   "name": "@marzahn-dev/react-scroll-anchor",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "repository": "https://github.com/leon-marzahn/marzahn-dev",
+  "keywords": [
+    "react",
+    "reactjs",
+    "scroll",
+    "hash",
+    "scrollable",
+    "scrolling",
+    "anchor",
+    "anchors",
+    "single",
+    "page",
+    "app",
+    "static",
+    "site",
+    "jump"
+  ],
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
