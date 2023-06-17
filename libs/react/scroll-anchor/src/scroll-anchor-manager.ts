@@ -6,18 +6,21 @@ export interface ScrollAnchorConfig {
   offset: number;
   scrollDuration: number;
   keepLastAnchorHash: boolean;
+  autoUpdateAnchorHash: boolean;
+  customAnchorHashUpdater?: (anchorId: string) => void;
 }
 
 const DEFAULT_CONFIG: ScrollAnchorConfig = {
   offset: 0,
   scrollDuration: 400,
-  keepLastAnchorHash: false
+  keepLastAnchorHash: false,
+  autoUpdateAnchorHash: true
 };
 
 export class ScrollAnchorManager {
   private _anchors: Record<string, {
     ref: RefObject<HTMLDivElement>;
-    offset?: number;
+    config?: ScrollAnchorConfig;
   }> = {};
   private _forcedHash = false;
   private _scrolling = false;
@@ -25,6 +28,9 @@ export class ScrollAnchorManager {
 
   private scrollFn = () => this.onScroll();
   private hashChangeFn = () => this.onHashChange();
+
+  public constructor() {
+  }
 
   public configure(config: Partial<ScrollAnchorConfig>) {
     this._config = {
@@ -37,15 +43,28 @@ export class ScrollAnchorManager {
   public addAnchor(
     anchorId: string,
     ref: RefObject<HTMLDivElement>,
-    offset?: number
+    config?: ScrollAnchorConfig
   ) {
     if (!Object.keys(this._anchors).length) this.addListeners();
-    this._anchors[anchorId] = { ref, offset };
+    this._anchors[anchorId] = { ref, config };
   }
 
   public removeAnchor(anchorId: string): void {
     delete this._anchors[anchorId];
     if (!Object.keys(this._anchors).length) this.removeListeners();
+  }
+
+  public goToAnchor(anchorId: string): void {
+    const anchor = this._anchors[anchorId];
+    if (!anchor || !anchor.ref.current) return;
+
+    const { ref, config } = anchor;
+    this._scrolling = true;
+    jump(ref.current as HTMLElement, {
+      duration: this._config.scrollDuration,
+      offset: config?.offset ?? this._config.offset,
+      callback: () => this._scrolling = false
+    });
   }
 
   private addListeners(): void {
@@ -61,13 +80,20 @@ export class ScrollAnchorManager {
   private onScroll(): void {
     if (this._scrolling) return;
 
-    const { offset, keepLastAnchorHash } = this._config;
-    const bestAnchorId = getBestAnchorGivenScrollLocation(this._anchors, offset);
+    const bestAnchorId = getBestAnchorGivenScrollLocation(this._anchors, this._config.offset);
 
-    if (bestAnchorId && getHash() !== bestAnchorId) {
+    if (this._config.autoUpdateAnchorHash && bestAnchorId && getHash() !== bestAnchorId) {
       this._forcedHash = true;
-      updateHash(bestAnchorId);
-    } else if (!bestAnchorId && !keepLastAnchorHash) {
+
+      const { config: anchorConfig } = this._anchors[bestAnchorId];
+      const customAnchorHashUpdater = anchorConfig?.customAnchorHashUpdater ?? this._config.customAnchorHashUpdater;
+
+      if (customAnchorHashUpdater) {
+        customAnchorHashUpdater(bestAnchorId);
+      } else {
+        updateHash(bestAnchorId);
+      }
+    } else if (!bestAnchorId && !this._config.keepLastAnchorHash) {
       removeHash();
     }
   }
@@ -78,24 +104,7 @@ export class ScrollAnchorManager {
       return;
     }
 
-    this.goToSection(getHash());
-  }
-
-  private goToSection(anchorId: string): void {
-    const anchor = this._anchors[anchorId];
-
-    if (!anchor || !anchor.ref.current) {
-      console.error(`Anchor with anchor id ${anchorId} could not be found.`);
-      return;
-    }
-
-    const { ref, offset } = anchor;
-    this._scrolling = true;
-    jump(ref.current as HTMLElement, {
-      duration: this._config.scrollDuration,
-      offset: offset ?? this._config.offset,
-      callback: () => this._scrolling = false
-    });
+    this.goToAnchor(getHash());
   }
 }
 

@@ -5,6 +5,7 @@ export function App() {
     <div>
       <a href="#section1">Section 1</a>
       <a href="#section2">Section 2</a>
+      <a href="#section3">Section 3</a>
 
       <ScrollAnchor anchor="section1" offset={-80}>
         <div style={{ height: '100vh', background: 'lightcyan' }}>

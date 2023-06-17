@@ -10,7 +10,8 @@ export function updateHash(hash: string, updateHistory?: boolean): void {
   if (updateHistory) {
     window.location.hash = hash;
   } else {
-    window.location.replace(`#${hash}`);
+    const { protocol, host, pathname, search } = window.location;
+    window.location.replace(`${protocol}//${host}${pathname}${search}#${hash}`);
   }
 }
 
