@@ -4,7 +4,7 @@ Libraries and utilities for Angular/React/etc.
 
 ## Documentation
 
-Check out our website: [marzahn-dev.io](https://marzahn-dev.io).
+Check out our website: [marzahn.io](https://marzahn.io).
 
 ## Contributing
 
