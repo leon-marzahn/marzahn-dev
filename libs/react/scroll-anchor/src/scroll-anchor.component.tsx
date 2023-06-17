@@ -1,22 +1,38 @@
 import React, { ComponentPropsWithoutRef, ReactNode, useEffect, useRef } from 'react';
-import { SCROLL_ANCHOR_MANAGER } from './scroll-anchor-manager';
+import { SCROLL_ANCHOR_MANAGER, ScrollAnchorBaseConfig } from './scroll-anchor-manager';
 
-interface ScrollAnchorComponentProps extends ComponentPropsWithoutRef<'div'> {
+interface ScrollAnchorComponentProps extends ComponentPropsWithoutRef<'div'>, Partial<ScrollAnchorBaseConfig> {
+  /**
+   * The id of the anchor.
+   */
   anchor: string;
+
+  /**
+   * Children elements
+   */
   children: ReactNode;
-  offset?: number;
 }
 
 export function ScrollAnchor({
                                anchor,
                                children,
                                offset,
+                               scrollDuration,
+                               customAnchorHashUpdater,
                                ...props
                              }: ScrollAnchorComponentProps) {
   const elementRef = useRef<HTMLDivElement>(null);
+  const initializedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    SCROLL_ANCHOR_MANAGER.addAnchor(anchor, elementRef, offset);
+    if (initializedRef.current) return;
+
+    initializedRef.current = true;
+    SCROLL_ANCHOR_MANAGER.addAnchor(anchor, elementRef, {
+      offset,
+      scrollDuration,
+      customAnchorHashUpdater
+    });
     return () => SCROLL_ANCHOR_MANAGER.removeAnchor(anchor);
   }, []);
 

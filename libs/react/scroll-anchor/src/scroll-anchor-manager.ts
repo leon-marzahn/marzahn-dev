@@ -2,12 +2,43 @@ import { RefObject } from 'react';
 import jump from 'jump.js';
 import { getBestAnchorGivenScrollLocation, getHash, removeHash, updateHash } from './util';
 
-export interface ScrollAnchorConfig {
+export interface ScrollAnchorBaseConfig {
+  /**
+   * The offset from the top of the element. Use negative value to account for headers for example.
+   *
+   * @default 0
+   */
   offset: number;
+
+  /**
+   * The duration in milliseconds it will take to scroll to anchors.
+   *
+   * @default 400
+   */
   scrollDuration: number;
-  keepLastAnchorHash: boolean;
-  autoUpdateAnchorHash: boolean;
+
+  /**
+   * An override function for updating the hash. Can be used with react router for example.
+   *
+   * @param anchorId The anchor id
+   */
   customAnchorHashUpdater?: (anchorId: string) => void;
+}
+
+export interface ScrollAnchorConfig extends ScrollAnchorBaseConfig {
+  /**
+   * If set, will keep the last anchor hash when scrolling past any anchors.
+   *
+   * @default false
+   */
+  keepLastAnchorHash: boolean;
+
+  /**
+   * If set, will automatically update the page hash as you scroll past anchors. (Or run the {@link customAnchorHashUpdater} if set)
+   *
+   * @default true
+   */
+  autoUpdateAnchorHash: boolean;
 }
 
 const DEFAULT_CONFIG: ScrollAnchorConfig = {
@@ -20,7 +51,7 @@ const DEFAULT_CONFIG: ScrollAnchorConfig = {
 export class ScrollAnchorManager {
   private _anchors: Record<string, {
     ref: RefObject<HTMLDivElement>;
-    config?: ScrollAnchorConfig;
+    config?: Partial<ScrollAnchorConfig>;
   }> = {};
   private _forcedHash = false;
   private _scrolling = false;
@@ -28,9 +59,6 @@ export class ScrollAnchorManager {
 
   private scrollFn = () => this.onScroll();
   private hashChangeFn = () => this.onHashChange();
-
-  public constructor() {
-  }
 
   public configure(config: Partial<ScrollAnchorConfig>) {
     this._config = {
@@ -40,20 +68,40 @@ export class ScrollAnchorManager {
     };
   }
 
+  /**
+   * Add an anchor to the manager.
+   *
+   * @param anchorId The anchor id
+   * @param ref The ref of the anchor component
+   * @param config The anchor override config
+   */
   public addAnchor(
     anchorId: string,
     ref: RefObject<HTMLDivElement>,
-    config?: ScrollAnchorConfig
+    config?: Partial<ScrollAnchorBaseConfig>
   ) {
     if (!Object.keys(this._anchors).length) this.addListeners();
     this._anchors[anchorId] = { ref, config };
+
+    const hash = getHash();
+    if (hash === anchorId) this.goToAnchor(anchorId);
   }
 
+  /**
+   * Remove an anchor from the manager by id
+   *
+   * @param anchorId The anchor id
+   */
   public removeAnchor(anchorId: string): void {
     delete this._anchors[anchorId];
     if (!Object.keys(this._anchors).length) this.removeListeners();
   }
 
+  /**
+   * Scroll to given anchor.
+   *
+   * @param anchorId The anchor id
+   */
   public goToAnchor(anchorId: string): void {
     const anchor = this._anchors[anchorId];
     if (!anchor || !anchor.ref.current) return;
@@ -61,7 +109,7 @@ export class ScrollAnchorManager {
     const { ref, config } = anchor;
     this._scrolling = true;
     jump(ref.current as HTMLElement, {
-      duration: this._config.scrollDuration,
+      duration: config?.scrollDuration ?? this._config.scrollDuration,
       offset: config?.offset ?? this._config.offset,
       callback: () => this._scrolling = false
     });
