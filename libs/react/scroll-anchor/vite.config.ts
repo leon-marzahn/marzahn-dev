@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   cacheDir: '../../../node_modules/.vite/react-scroll-anchor',
@@ -18,6 +19,14 @@ export default defineConfig({
     viteTsConfigPaths({
       root: '../../../',
     }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'README.md',
+          dest: '.'
+        }
+      ]
+    })
   ],
 
   // Uncomment this if you are using workers.

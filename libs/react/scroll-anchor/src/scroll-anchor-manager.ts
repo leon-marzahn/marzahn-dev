@@ -1,5 +1,6 @@
 import { RefObject } from 'react';
 import jump from 'jump.js';
+import { getBestAnchorGivenScrollLocation, getHash, removeHash, updateHash } from './util';
 
 export interface ScrollAnchorConfig {
   offset: number;
@@ -19,7 +20,11 @@ export class ScrollAnchorManager {
     offset?: number;
   }> = {};
   private _forcedHash = false;
+  private _scrolling = false;
   private _config: ScrollAnchorConfig = DEFAULT_CONFIG;
+
+  private scrollFn = () => this.onScroll();
+  private hashChangeFn = () => this.onHashChange();
 
   public configure(config: Partial<ScrollAnchorConfig>) {
     this._config = {
@@ -43,6 +48,39 @@ export class ScrollAnchorManager {
     if (!Object.keys(this._anchors).length) this.removeListeners();
   }
 
+  private addListeners(): void {
+    window.addEventListener('scroll', this.scrollFn, false);
+    window.addEventListener('hashchange', this.hashChangeFn);
+  }
+
+  private removeListeners(): void {
+    window.removeEventListener('scroll', this.scrollFn, false);
+    window.removeEventListener('hashchange', this.hashChangeFn);
+  }
+
+  private onScroll(): void {
+    if (this._scrolling) return;
+
+    const { offset, keepLastAnchorHash } = this._config;
+    const bestAnchorId = getBestAnchorGivenScrollLocation(this._anchors, offset);
+
+    if (bestAnchorId && getHash() !== bestAnchorId) {
+      this._forcedHash = true;
+      updateHash(bestAnchorId);
+    } else if (!bestAnchorId && !keepLastAnchorHash) {
+      removeHash();
+    }
+  }
+
+  private onHashChange(): void {
+    if (this._forcedHash) {
+      this._forcedHash = false;
+      return;
+    }
+
+    this.goToSection(getHash());
+  }
+
   private goToSection(anchorId: string): void {
     const anchor = this._anchors[anchorId];
 
@@ -52,28 +90,12 @@ export class ScrollAnchorManager {
     }
 
     const { ref, offset } = anchor;
+    this._scrolling = true;
     jump(ref.current as HTMLElement, {
       duration: this._config.scrollDuration,
-      offset: offset ?? this._config.offset
+      offset: offset ?? this._config.offset,
+      callback: () => this._scrolling = false
     });
-  }
-
-  private addListeners(): void {
-    window.addEventListener('scroll', this.onScroll, false);
-    window.addEventListener('hashchange', this.onHashChange);
-  }
-
-  private removeListeners(): void {
-    window.removeEventListener('scroll', this.onScroll, false);
-    window.removeEventListener('hashchange', this.onHashChange);
-  }
-
-  private onScroll(): void {
-
-  }
-
-  private onHashChange(): void {
-
   }
 }
 

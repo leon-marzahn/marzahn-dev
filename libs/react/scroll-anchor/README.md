@@ -1,7 +1,6 @@
-# libs\react-react-scroll-anchor
+# @marzahn-dev/react-scroll-anchor
 
-This library was generated with [Nx](https://nx.dev).
+The sources for this package are in the main [marzahn-dev](https://github.com/leon-marzahn/marzahn-dev) repo.
+Please file pull requests against that repo.
 
-## Running unit tests
-
-Run `nx test libs\react-react-scroll-anchor` to execute the unit tests via [Vitest](https://vitest.dev/).
+License: MIT

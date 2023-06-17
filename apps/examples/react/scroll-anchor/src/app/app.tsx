@@ -3,7 +3,10 @@ import { ScrollAnchor } from '@marzahn-dev/react-scroll-anchor';
 export function App() {
   return (
     <div>
-      <ScrollAnchor anchor="section1">
+      <a href="#section1">Section 1</a>
+      <a href="#section2">Section 2</a>
+
+      <ScrollAnchor anchor="section1" offset={-80}>
         <div style={{ height: '100vh', background: 'lightcyan' }}>
           Section 1
         </div>
